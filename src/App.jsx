@@ -1,0 +1,30 @@
+
+import { Routes, Route, Navigate } from 'react-router-dom'
+import './App.css'
+import Layout from './componentes/Layout'
+import Dashboard from './pages/Dashboard'
+import Reports from './pages/Reports'
+import Users from './pages/Users'
+import Products from './pages/Products'
+import Settings from './pages/Settings'
+import SalesReports from './pages/SalesReports'
+import UserReports from './pages/UserReports'
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="reports" element={<Reports />} />
+        <Route path="reports/sales" element={<SalesReports />} />
+        <Route path="reports/users" element={<UserReports />} />
+        <Route path="users" element={<Users />} />
+        <Route path="products" element={<Products />} />
+        <Route path="settings" element={<Settings />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+    </Routes>
+  )
+}
+
+export default App
