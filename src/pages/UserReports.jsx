@@ -1,4 +1,4 @@
-export default function UserReports() {
+const UserReports = () => {
   return (
     <div className="card">
       <div className="card-header">
@@ -44,3 +44,5 @@ export default function UserReports() {
     </div>
   );
 }
+
+export default UserReports;

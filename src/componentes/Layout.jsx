@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 
 
-export default function Layout() {
+const Layout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false); // Inicia FECHADO
 
     const toggleSidebar = () => {
@@ -46,3 +46,5 @@ export default function Layout() {
         </div>
     );
 }
+
+export default Layout;

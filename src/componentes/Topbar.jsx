@@ -2,7 +2,7 @@ import { IconMenu2, IconMoon, IconSun } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 
 
-export default function Topbar({ onToggleSidebar }) {
+const Topbar = ({ onToggleSidebar }) => {
 const [dark, setDark] = useState(false);
 
 
@@ -37,3 +37,5 @@ return (
   </header>
 );
 }
+
+export default Topbar;

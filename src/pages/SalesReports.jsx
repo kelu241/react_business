@@ -1,4 +1,4 @@
-export default function SalesReports() {
+const SalesReports = () => {
   return (
     <div className="card">
       <div className="card-header">
@@ -35,3 +35,5 @@ export default function SalesReports() {
     </div>
   );
 }
+
+export default SalesReports;

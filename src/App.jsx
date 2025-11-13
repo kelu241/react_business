@@ -10,7 +10,7 @@ import Settings from './pages/Settings'
 import SalesReports from './pages/SalesReports'
 import UserReports from './pages/UserReports'
 
-function App() {
+const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>

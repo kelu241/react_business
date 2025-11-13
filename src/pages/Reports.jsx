@@ -1,4 +1,4 @@
-export default function Reports() {
+const Reports = () => {
 return (
 <div className="card">
 <div className="card-header">
@@ -10,3 +10,5 @@ return (
 </div>
 );
 }
+
+export default Reports;

@@ -12,7 +12,7 @@ import {
   IconTrendingUp
 } from '@tabler/icons-react';
 
-export default function Sidebar({ onNavigate }) {
+const Sidebar = ({ onNavigate }) => {
   const [openMenus, setOpenMenus] = useState({});
 
   const toggleMenu = (menuKey) => {
@@ -108,3 +108,5 @@ export default function Sidebar({ onNavigate }) {
     </aside>
   );
 }
+
+export default Sidebar;

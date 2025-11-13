@@ -1,4 +1,4 @@
-export default function Dashboard() {
+const Dashboard = () => {
   return (
     <>
       {/* Row para as métricas */}
@@ -75,3 +75,5 @@ export default function Dashboard() {
     </>
   );
 }
+
+export default Dashboard;

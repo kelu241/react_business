@@ -1,4 +1,4 @@
-export default function Settings() {
+const Settings = () => {
   return (
     <div className="card">
       <div className="card-header">
@@ -29,3 +29,5 @@ export default function Settings() {
     </div>
   );
 }
+
+export default Settings;
