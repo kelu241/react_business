@@ -9,6 +9,12 @@ import Products from './pages/Products'
 import Settings from './pages/Settings'
 import SalesReports from './pages/SalesReports'
 import UserReports from './pages/UserReports'
+import Form from './pages/Form'
+import ApiExample from './pages/ApiExample'
+import HookExample from './hooks/useApi'
+import LoadingStates from './pages/LoadingStates'
+import HooksExample from './pages/HooksExample'
+import CustomHooksExample from './pages/CustomHooksExample'
 
 const App = () => {
   return (
@@ -20,7 +26,13 @@ const App = () => {
         <Route path="reports/users" element={<UserReports />} />
         <Route path="users" element={<Users />} />
         <Route path="products" element={<Products />} />
+        <Route path="api-example" element={<ApiExample />} />
+        <Route path="api-hooks" element={<HookExample />} />
+        <Route path="loading-states" element={<LoadingStates />} />
+        <Route path="hooks-example" element={<HooksExample />} />
+        <Route path="custom-hooks" element={<CustomHooksExample />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="form" element={<Form />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

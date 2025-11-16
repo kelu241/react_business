@@ -9,7 +9,9 @@ import {
   IconShoppingCart,
   IconSettings,
   IconFileText,
-  IconTrendingUp
+  IconTrendingUp,
+  IconApi,
+  IconLoader
 } from '@tabler/icons-react';
 
 const Sidebar = ({ onNavigate }) => {
@@ -98,6 +100,74 @@ const Sidebar = ({ onNavigate }) => {
             </NavLink>
           </div>
         </div>
+
+        {/* APIs com submenu */}
+        <div>
+          <button
+            className="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+            onClick={() => toggleMenu('apis')}
+            type="button"
+          >
+            <div className="d-flex align-items-center">
+              <IconApi className="me-2" size={18} />
+              <span>APIs</span>
+            </div>
+            {openMenus.apis ? 
+              <IconChevronDown size={16} /> : 
+              <IconChevronRight size={16} />
+            }
+          </button>
+          
+          <div className={`collapse ${openMenus.apis ? 'show' : ''}`}>
+            <NavLink to="/api-example" className={submenuItemClass} onClick={onNavigate}>
+              <IconApi className="me-2" size={16} />
+              <span>Exemplo Básico</span>
+            </NavLink>
+            <NavLink to="/api-hooks" className={submenuItemClass} onClick={onNavigate}>
+              <IconLoader className="me-2" size={16} />
+              <span>Com Hooks</span>
+            </NavLink>
+            <NavLink to="/loading-states" className={submenuItemClass} onClick={onNavigate}>
+              <IconLoader className="me-2" size={16} />
+              <span>Estados Loading</span>
+            </NavLink>
+          </div>
+        </div>
+
+        {/* Hooks com submenu */}
+        <div>
+          <button
+            className="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+            onClick={() => toggleMenu('hooks')}
+            type="button"
+          >
+            <div className="d-flex align-items-center">
+              <IconFileText className="me-2" size={18} />
+              <span>Hooks</span>
+            </div>
+            {openMenus.hooks ? 
+              <IconChevronDown size={16} /> : 
+              <IconChevronRight size={16} />
+            }
+          </button>
+          
+          <div className={`collapse ${openMenus.hooks ? 'show' : ''}`}>
+            <NavLink to="/hooks-example" className={submenuItemClass} onClick={onNavigate}>
+              <IconFileText className="me-2" size={16} />
+              <span>Hooks Básicos</span>
+            </NavLink>
+            <NavLink to="/custom-hooks" className={submenuItemClass} onClick={onNavigate}>
+              <IconSettings className="me-2" size={16} />
+              <span>Hooks Customizados</span>
+            </NavLink>
+          </div>
+        </div>
+
+        {/* Formulário */}
+        <NavLink to="/form" className={linkClass} onClick={onNavigate}>
+          <IconFileText className="me-2" size={18} />
+          <span>Formulário</span>
+        </NavLink>
 
         {/* Configurações */}
         <NavLink to="/settings" className={linkClass} onClick={onNavigate}>
