@@ -1,109 +1,111 @@
 import DataTable from 'react-data-table-component';
 import { useState, useEffect } from 'react';
-import { ProjetoService } from '../services/ProjetoService';    
+import { ProjetoService } from '../services/ProjetoService';
 
 const Dashboard = () => {
-  const [atividades, setAtividades] = useState([]);
   const [loading, setLoading] = useState(false);
   const [apiData, setApiData] = useState(null);
+  
+  // Debug: Log sempre que apiData muda  
+  console.log('🔄 Dashboard re-renderizou. apiData:', apiData ? `${apiData.length} itens` : 'null', 'loading:', loading);
 
-  // ✅ useEffect com cleanup para evitar vazamento
+  // ✅ useEffect simplificado - sempre busca dados frescos
   useEffect(() => {
-    setLoading(true);
+    console.log('🚀 useEffect executado - buscando dados frescos');
     
+    setLoading(true);
+
     // Criar Observable
     const testeApi = ProjetoService(
-      'https://jsonplaceholder.typicode.com/posts', 
-      'GET', 
-      {'Content-Type': 'application/json'}, 
+      'http://localhost:8080/api/projetos',
+      'GET',
+      { 'Content-Type': 'application/json' },
       null
     );
 
     // Subscribe com referência para cleanup
     const subscription = testeApi.subscribe({
       next: (data) => {
-        console.log('Dados da API:', data);
-        setApiData(data);
+        console.log('🎉 Dados recebidos da API:', data);
+        console.log('📊 Tipo dos dados:', typeof data);
+        console.log('📋 É array?', Array.isArray(data));
+        console.log('📏 Quantidade de itens:', data?.length || 'N/A');
+        
+        // Atualizar com os dados recebidos
+        if (data) {
+          console.log('✅ Atualizando estado com dados frescos');
+          setApiData(data);
+        } else {
+          console.log('⚠️ Dados vazios ou nulos');
+          setApiData([]);
+        }
         setLoading(false);
       },
       error: (err) => {
-        console.error('Erro na API:', err);
+        console.error('❌ Erro na API:', err);
+        console.error('🔍 Status do erro:', err.message);
+        setApiData([]);
         setLoading(false);
       }
     });
 
     // ✅ CLEANUP - MUITO IMPORTANTE!
     return () => {
+      console.log('🧹 Cleanup executado - desmontando componente');
       subscription.unsubscribe();
       console.log('Observable desconectado - sem vazamento!');
     };
   }, []); // ← Array vazio = executa só uma vez
 
-  // Dados das atividades
-  const dadosAtividades = [
-    {
-      id: 1,
-      data: '12/11/2025',
-      usuario: 'Raquel',
-      acao: 'Cadastro de produto',
-      status: 'success',
-      statusTexto: 'Concluído'
-    },
-    {
-      id: 2,
-      data: '12/11/2025',
-      usuario: 'Luciano',
-      acao: 'Exportação de relatórios',
-      status: 'warning',
-      statusTexto: 'Processando'
-    },
-    {
-      id: 3,
-      data: '11/11/2025',
-      usuario: 'Ana',
-      acao: 'Login no sistema',
-      status: 'success',
-      statusTexto: 'Concluído'
-    },
-    {
-      id: 4,
-      data: '10/11/2025',
-      usuario: 'Carlos',
-      acao: 'Atualização de perfil',
-      status: 'success',
-      statusTexto: 'Concluído'
-    },
-  ];
+
 
   // Configuração das colunas
   const colunas = [
     {
-      name: 'Data',
-      selector: row => row.data,
+      name: 'Id',
+      selector: row => row.id,
       sortable: true,
       width: '120px',
     },
     {
-      name: 'Usuário',
-      selector: row => row.usuario,
+      name: 'Nome',
+      selector: row => row.nome,
       sortable: true,
       width: '150px',
     },
     {
-      name: 'Ação',
-      selector: row => row.acao,
+      name: 'Orçamento',
+      selector: row => row.orcamento,
       sortable: true,
-      grow: 2,
+      width: '150px',
     },
     {
-      name: 'Status',
-      cell: row => (
-        <span className={`badge ${row.status === 'success' ? 'bg-success' : 'bg-warning'}`}>
-          {row.statusTexto}
-        </span>
-      ),
-      width: '120px',
+      name: 'Data de Início',
+      selector: row => row.dataInicio,
+      sortable: true,
+      width: '150px',
     },
+    {
+      name: 'Data de Término',
+      selector: row => row.dataFim,
+      sortable: true,
+      width: '150px',
+    },
+    {
+      name: 'Descrição',
+      selector: row => row.descricao,
+      sortable: true,
+      width: '200px',
+    },
+    // {
+    //   name: 'Status',
+    //   cell: row => (
+    //     <span className={`badge ${row.status === 'success' ? 'bg-success' : 'bg-warning'}`}>
+    //       {row.statusTexto}
+    //     </span>
+    //   ),
+    //   width: '120px',
+    // },
   ];
 
   // Estilos para combinar com Tabler
@@ -141,14 +143,15 @@ const Dashboard = () => {
     },
   };
 
-  // Simular carregamento dos dados
-  useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setAtividades(dadosAtividades);
-      setLoading(false);
-    }, 500);
-  }, []);
+  // ❌ CÓDIGO REMOVIDO - CAUSAVA BUG
+  // Este useEffect estava resetando apiData para seu valor inicial (null)
+  // useEffect(() => {
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     setApiData(apiData); // ← ESTE ERA O PROBLEMA!
+  //     setLoading(false);
+  //   }, 500);
+  // }, []);
   return (
     <>
       {/* Row para as métricas */}
@@ -186,10 +189,14 @@ const Dashboard = () => {
           <div className="card">
             <div className="card-header">
               <h3 className="card-title">Últimas atividades</h3>
+              {/* Debug info */}
+              <div className="text-muted small">
+                Debug: {apiData ? `${Array.isArray(apiData) ? apiData.length : 'não é array'} itens` : 'sem dados'}
+              </div>
             </div>
             <DataTable
               columns={colunas}
-              data={atividades}
+              data={apiData || []}
               customStyles={estilosTabler}
               pagination
               paginationPerPage={5}

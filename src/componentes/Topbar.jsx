@@ -1,14 +1,25 @@
-import { IconMenu2, IconMoon, IconSun } from '@tabler/icons-react';
+import { IconMenu2, IconMoon, IconOutbound, IconSun } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
+import { useLimparLocalStorage } from '../hooks/customHooks';
+import { useNavigate } from 'react-router-dom';
 
 
 const Topbar = ({ onToggleSidebar }) => {
 const [dark, setDark] = useState(false);
+const limparToken = useLimparLocalStorage('authToken');
+const navigate = useNavigate();
+
+const handleLogout = () => {
+  limparToken(); // Limpa o token
+  navigate('/login'); // Redireciona para login
+};
 
 
 useEffect(() => {
 document.body.setAttribute('data-bs-theme', dark ? 'dark' : 'light');
 }, [dark]);
+
+
 
 
 return (
@@ -31,6 +42,9 @@ return (
       <div className="navbar-nav flex-row order-md-last">
         <button className="btn" onClick={() => setDark(v => !v)} aria-label="Alternar tema">
           {dark ? <IconSun /> : <IconMoon />}
+        </button>
+         <button className="btn ms-2" onClick={handleLogout} aria-label="SAIR">
+          <IconOutbound /> 
         </button>
       </div>
     </div>

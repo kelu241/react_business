@@ -6,7 +6,16 @@ export const useLocalStorage = (key, initialValue) => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      if (!item) return initialValue;
+      
+      // Tentar JSON.parse, mas se falhar, retornar string diretamente
+      try {
+        return JSON.parse(item);
+      } catch (parseError) {
+        // Se não for JSON válido, provavelmente é uma string simples (como token)
+        console.log(`localStorage "${key}" não é JSON, usando como string`);
+        return item;
+      }
     } catch (error) {
       console.error(`Erro ao ler localStorage key "${key}":`, error);
       return initialValue;
@@ -19,7 +28,13 @@ export const useLocalStorage = (key, initialValue) => {
       // Permite que value seja uma função (como setState)
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      
+      // Se for string simples, salvar direto. Se for objeto/array, usar JSON.stringify
+      if (typeof valueToStore === 'string') {
+        window.localStorage.setItem(key, valueToStore);
+      } else {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      }
     } catch (error) {
       console.error(`Erro ao salvar localStorage key "${key}":`, error);
     }
@@ -240,3 +255,15 @@ export const useFormValidation = (initialValues, validationRules) => {
     reset
   };
 };
+
+export const useLimparLocalStorage = (key) => {
+  const limpar = useCallback(() => {
+    try {
+      window.localStorage.removeItem(key);
+    } catch (error) {
+      console.error(`Erro ao limpar localStorage key "${key}":`, error);
+    }
+  }, [key]);
+
+  return limpar;
+}
